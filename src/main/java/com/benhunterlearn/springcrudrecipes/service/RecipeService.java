@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,10 +25,10 @@ public class RecipeService {
         return outputRecipeDto;
     }
 
-    public List<RecipeDto> getAllRecipes() {
-        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
-        this.repository.findAll().forEach(recipeArrayList::add);
-        return recipeArrayList.stream().map(recipe -> new RecipeDto(recipe)).collect(Collectors.toList());
+    public List<RecipeDto> getAllRecipesFiltered(Map<String, String> filterMap) {
+        Integer minCalories = Integer.valueOf(filterMap.getOrDefault("min-calories", "0"));
+        Integer maxCalories = Integer.valueOf(filterMap.getOrDefault("max-calories", String.valueOf(Integer.MAX_VALUE)));
+        return this.repository.findAllByCaloriesBetween(minCalories, maxCalories).stream().map(RecipeDto::new).collect(Collectors.toList());
     }
 
     public RecipeDto getRecipeById(Long id) {

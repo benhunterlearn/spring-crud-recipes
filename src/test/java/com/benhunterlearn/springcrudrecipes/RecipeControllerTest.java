@@ -100,6 +100,21 @@ public class RecipeControllerTest {
     }
 
     @Test
+    public void getAllRecipesFromDatabaseFilteredByCalories() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.get("/recipe?max-calories=150")
+                .accept(MediaType.APPLICATION_JSON);
+        this.mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id", is(this.firstRecipe.getId().intValue())))
+                .andExpect(jsonPath("$[0].title", is(this.firstRecipe.getTitle())))
+                .andExpect(jsonPath("$[0].description", is(this.firstRecipe.getDescription())))
+                .andExpect(jsonPath("$[0].instructions", is(this.firstRecipe.getInstructions())))
+                .andExpect(jsonPath("$[0].calories", is(this.firstRecipe.getCalories())))
+                .andExpect(jsonPath("$[0].date-created", is(this.firstRecipe.getDateCreated().toString())))
+                .andExpect(jsonPath("$[1]").doesNotExist());
+    }
+
+    @Test
     public void getRecipeByValidId() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.get("/recipe/" + this.firstRecipe.getId())
                 .accept(MediaType.APPLICATION_JSON);

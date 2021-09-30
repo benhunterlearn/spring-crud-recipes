@@ -5,6 +5,8 @@ import com.benhunterlearn.springcrudrecipes.repository.RecipeRepository;
 import com.benhunterlearn.springcrudrecipes.service.RecipeService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/recipe")
 public class RecipeController {
@@ -20,8 +22,9 @@ public class RecipeController {
     }
 
     @GetMapping("")
-    public Iterable<RecipeDto> getAllRecipes() {
-        return this.service.getAllRecipes();
+    public Iterable<RecipeDto> getAllRecipesWithOptionalFilterByCaloriesMaxMin(
+            @RequestParam Map<String, String> filterMap) {
+        return this.service.getAllRecipesFiltered(filterMap);
     }
 
     @GetMapping("/{id}")
