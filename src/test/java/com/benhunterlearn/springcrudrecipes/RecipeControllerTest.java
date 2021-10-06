@@ -51,7 +51,7 @@ public class RecipeControllerTest {
                 .setCalories(100)
                 .setDateCreated(LocalDate.now()));
         this.secondRecipe = this.repository.save(new Recipe()
-                .setTitle("second itle")
+                .setTitle("second title")
                 .setDescription("second desc")
                 .setInstructions("second instr")
                 .setCalories(200)
@@ -76,7 +76,8 @@ public class RecipeControllerTest {
                 .andExpect(jsonPath("$.description", is(recipeDto.getDescription())))
                 .andExpect(jsonPath("$.instructions", is(recipeDto.getInstructions())))
                 .andExpect(jsonPath("$.calories", is(recipeDto.getCalories())))
-                .andExpect(jsonPath("$.date-created", is(recipeDto.getDateCreated().toString())));
+                .andExpect(jsonPath("$.date-created", is(recipeDto.getDateCreated().toString())))
+                .andExpect(jsonPath("$.id").isNumber());
     }
 
     @Test
